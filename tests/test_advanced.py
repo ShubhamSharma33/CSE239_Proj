@@ -46,28 +46,28 @@ class AdvancedLoadTester:
                 'timestamp': datetime.now().isoformat()
             }
 
-    def spike_test(self, baseline_rps=2, spike_rps=20, spike_duration=30):
+    def spike_test(self, baseline_rps=0.1, spike_rps=2, spike_duration=30):
         """
         Spike Test: Sudden increase in load
 
         Args:
-            baseline_rps: Requests per second during baseline (default: 2)
-            spike_rps: Requests per second during spike (default: 20)
+            baseline_rps: Requests per second during baseline (default: 0.5 = 1 req per 2s)
+            spike_rps: Requests per second during spike (default: 4)
             spike_duration: Duration of spike in seconds (default: 30)
         """
         print(f"\n{'='*70}")
         print(f"🔥 SPIKE TEST")
         print(f"{'='*70}")
-        print(f"Baseline: {baseline_rps} req/s for 30s")
+        print(f"Baseline: 0.5 req/s for 60s")
         print(f"Spike: {spike_rps} req/s for {spike_duration}s")
-        print(f"Recovery: {baseline_rps} req/s for 30s")
+        print(f"Recovery: 0.5 req/s for 60s")
         print(f"{'='*70}\n")
 
         all_results = []
 
-        # Phase 1: Baseline (30 seconds)
-        print("📊 Phase 1: Baseline load (30s)...")
-        baseline_results = self._run_sustained_load(baseline_rps, 30, "Baseline")
+        # Phase 1: Baseline (60 seconds)
+        print("📊 Phase 1: Baseline load (60s)...")
+        baseline_results = self._run_sustained_load(baseline_rps, spike_duration, "Baseline")
         all_results.extend(baseline_results)
 
         # Phase 2: Spike (spike_duration seconds)
@@ -75,9 +75,9 @@ class AdvancedLoadTester:
         spike_results = self._run_sustained_load(spike_rps, spike_duration, "Spike")
         all_results.extend(spike_results)
 
-        # Phase 3: Recovery (30 seconds)
-        print("\n🔄 Phase 3: Recovery to baseline (30s)...")
-        recovery_results = self._run_sustained_load(baseline_rps, 30, "Recovery")
+        # Phase 3: Recovery (60 seconds)
+        print("\n🔄 Phase 3: Recovery to baseline (60s)...")
+        recovery_results = self._run_sustained_load(baseline_rps, spike_duration, "Recovery")
         all_results.extend(recovery_results)
 
         self._print_phase_summary(baseline_results, "Baseline")
@@ -292,7 +292,8 @@ class AdvancedLoadTester:
 
 def main():
     parser = argparse.ArgumentParser(description='Advanced Load Testing Suite')
-    parser.add_argument('--url', default='http://34.70.42.27',
+    parser.add_argument('--url', default="http://34.50.161.155",
+                        #'http://34.70.42.27',
                        help='Base URL of the service (default: http://34.70.42.27)')
     parser.add_argument('--type', choices=['spike', 'stress', 'soak', 'all'],
                        required=True,

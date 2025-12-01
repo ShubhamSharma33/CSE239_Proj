@@ -111,7 +111,9 @@ class LoadTester:
 
 def main():
     # Configure your service URL
-    SERVICE_URL = "http://34.70.42.27"  # GCP External IP
+    SERVICE_URL = "34.50.161.155"
+    
+    #"http://34.70.42.27"  # Nautilus External IP
 
     print(f"🎯 Testing CodeLlama 7B service at: {SERVICE_URL}")
     print(f"🔍 Testing health endpoint first...")
@@ -163,7 +165,7 @@ def main():
 
     # Save results to file
     if all_results:
-        with open('benchmark_results.json', 'w') as f:
+        with open('benchmark_results2.json', 'w') as f:
             json.dump(all_results, f, indent=2)
         
         print(f"\n{'='*70}")

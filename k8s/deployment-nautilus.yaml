@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: llm-service
-        image: shubhamsharma33/llm-inference:v4
+        image: shubhamsharma33/llm-inference:v6
         ports:
         - containerPort: 8080
         env:
