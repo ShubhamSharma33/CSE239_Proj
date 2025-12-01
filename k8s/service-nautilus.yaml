@@ -1,0 +1,32 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: llm-inference-service
+  namespace: cse239fall2025
+spec:
+  type: ClusterIP
+  selector:
+    app: llm-inference
+  ports:
+  - port: 80
+    targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: llm-inference-ingress
+  namespace: cse239fall2025
+  annotations:
+    kubernetes.io/ingress.class: haproxy
+spec:
+  rules:
+  - host: llm-sshar134.nrp-nautilus.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: llm-inference-service
+            port:
+              number: 80
