@@ -12,7 +12,8 @@ class LLMInference:
         self.model = Llama(
             model_path=model_path,
             n_ctx=n_ctx,
-            n_threads=n_threads,
+	    n_threads=n_threads,
+            n_gpu_layers=-1,  # Offload all layers to GPU
             verbose=False
         )
 
@@ -25,6 +26,6 @@ class LLMInference:
             prompt,
             max_tokens=max_tokens,
             temperature=temperature,
-            stop=["</s>", "User:", "\n\n"]
+            stop=["</s>", "<|eot_id|>"]
         )
         return response

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-inference-qwen
+  namespace: cse239fall2025
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llm-inference-qwen
+  template:
+    metadata:
+      labels:
+        app: llm-inference-qwen
+    spec:
+      containers:
+      - name: llm-service
+        image: shubhamsharma33/llm-inference:qwen-v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MODEL_PATH
+          value: "/app/models/qwen2.5-1.5b-q4.gguf"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"

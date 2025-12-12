@@ -111,7 +111,7 @@ class LoadTester:
 
 def main():
     # Configure your service URL
-    SERVICE_URL = "34.50.161.155"
+    SERVICE_URL = "http://llm-gpu-sshar134.nrp-nautilus.io"
     
     #"http://34.70.42.27"  # Nautilus External IP
 
@@ -184,3 +184,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

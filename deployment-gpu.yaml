@@ -1,0 +1,38 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-inference
+  namespace: llm-inference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llm-inference
+  template:
+    metadata:
+      labels:
+        app: llm-inference
+    spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: gpu-pool
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: llm-service
+        image: shubhamsharma33/llm-inference:v5-gpu
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MODEL_PATH
+          value: "/app/models/llama-3.2-3b-q4.gguf"
+        resources:
+          requests:
+            memory: "8Gi"
+            cpu: "2"
+            nvidia.com/gpu: "1"
+          limits:
+            memory: "16Gi"
+            cpu: "4"
+            nvidia.com/gpu: "1"

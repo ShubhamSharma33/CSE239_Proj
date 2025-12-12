@@ -1,0 +1,32 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-inference-gpu
+  namespace: cse239fall2025
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llm-inference-gpu
+  template:
+    metadata:
+      labels:
+        app: llm-inference-gpu
+    spec:
+      containers:
+      - name: llm-service
+        image: shubhamsharma33/llm-inference:v5-gpu
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MODEL_PATH
+          value: "/app/models/llama-3.2-3b-q4.gguf"
+        resources:
+          requests:
+            memory: "8Gi"
+            cpu: "2"
+            nvidia.com/gpu: "1"
+          limits:
+            memory: "16Gi"
+            cpu: "4"
+            nvidia.com/gpu: "1"

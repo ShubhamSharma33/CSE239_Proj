@@ -4,7 +4,7 @@ metadata:
   name: llm-inference
   namespace: llm-inference
 spec:
-  replicas: 1
+  replicas: 1  # Start with 1 replica
   selector:
     matchLabels:
       app: llm-inference
@@ -29,3 +29,32 @@ spec:
           limits:
             memory: "4Gi"
             cpu: "2"
+        # Optional: Add health checks if your app supports them
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - llm-inference
+              topologyKey: kubernetes.io/hostname

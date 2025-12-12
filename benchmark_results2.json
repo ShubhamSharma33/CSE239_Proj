@@ -1,0 +1,44 @@
+[
+  {
+    "total_requests": 5,
+    "successful": 5,
+    "failed": 0,
+    "concurrency": 1,
+    "total_time": 37.81446719169617,
+    "avg_latency": 7.5600104331970215,
+    "p50_latency": 8.056671857833862,
+    "min_latency": 6.552123069763184,
+    "max_latency": 8.353641033172607,
+    "throughput": 0.1322245259903588,
+    "total_tokens": 400,
+    "scenario": "Light Load (Sequential)"
+  },
+  {
+    "total_requests": 10,
+    "successful": 10,
+    "failed": 0,
+    "concurrency": 2,
+    "total_time": 74.17927432060242,
+    "avg_latency": 14.67903995513916,
+    "p50_latency": 14.68225347995758,
+    "min_latency": 13.106393337249756,
+    "max_latency": 15.944532632827759,
+    "throughput": 0.13480854445650217,
+    "total_tokens": 800,
+    "scenario": "Medium Load (2 Concurrent)"
+  },
+  {
+    "total_requests": 15,
+    "successful": 15,
+    "failed": 0,
+    "concurrency": 3,
+    "total_time": 86.44716691970825,
+    "avg_latency": 16.636493762334187,
+    "p50_latency": 16.643890857696533,
+    "min_latency": 4.21211314201355,
+    "max_latency": 27.82446813583374,
+    "throughput": 0.17351638618685947,
+    "total_tokens": 1200,
+    "scenario": "Heavy Load (3 Concurrent)"
+  }
+]

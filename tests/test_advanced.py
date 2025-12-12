@@ -292,7 +292,7 @@ class AdvancedLoadTester:
 
 def main():
     parser = argparse.ArgumentParser(description='Advanced Load Testing Suite')
-    parser.add_argument('--url', default="http://34.50.161.155",
+    parser.add_argument('--url', default="http://34.50.161.155/chat",
                         #'http://34.70.42.27',
                        help='Base URL of the service (default: http://34.70.42.27)')
     parser.add_argument('--type', choices=['spike', 'stress', 'soak', 'all'],

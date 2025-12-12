@@ -8,6 +8,9 @@ import sys
 app = Flask(__name__, static_folder='../frontend')
 CORS(app)  # Enable CORS for frontend access
 
+# Prometheus metrics
+
+
 # Configuration
 MODEL_PATH = os.environ.get('MODEL_PATH', 'models/llama-3.2-3b-q4.gguf')
 USE_OLLAMA = os.environ.get('USE_OLLAMA', 'false').lower() == 'true'
@@ -43,7 +46,7 @@ except Exception as e:
 
 print("Service ready!")
 
-# Metrics
+# Legacy metrics (kept for backwards compatibility)
 stats = {
     'total_requests': 0,
     'total_tokens': 0,
@@ -77,8 +80,7 @@ def chat():
         prompt = data['prompt']
         max_tokens = data.get('max_tokens', 150)
         temperature = data.get('temperature', 0.7)
-        prompt = f"[INST] {prompt} [/INST]"
-       
+        prompt = f"<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
 
 
         # Generate response
@@ -88,7 +90,7 @@ def chat():
         latency = time.time() - start_time
         tokens_generated = response['usage']['completion_tokens']
 
-        # Update stats
+        # Update legacy stats
         stats['total_requests'] += 1
         stats['total_tokens'] += tokens_generated
         stats['total_latency'] += latency
@@ -103,9 +105,10 @@ def chat():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/metrics', methods=['GET'])
-def metrics():
-    """Prometheus-compatible metrics endpoint"""
+
+@app.route('/stats', methods=['GET'])
+def legacy_metrics():
+    """Legacy metrics endpoint (JSON format)"""
     avg_latency = (stats['total_latency'] / stats['total_requests']
                    if stats['total_requests'] > 0 else 0)
 
@@ -117,4 +120,4 @@ def metrics():
     }), 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=False)
